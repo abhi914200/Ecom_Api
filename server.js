@@ -1,8 +1,9 @@
 // 1. Import Exprerss
+
 import express from 'express';
 import swagger from 'swagger-ui-express';
 import dotenv from "dotenv";
-
+const PORT = process.env.PORT || 3200;
 import productRouter from './src/features/product/product.routes.js';
 import userRouter from './src/features/user/user.routes.js';
 import jwtAuth from './src/middlewares/jwt.middleware.js';
@@ -100,7 +101,7 @@ server.use((req, res) => {
 });
 
 // 5. Specify port.
-server.listen(3200, ()=>{
+server.listen(PORT, ()=>{
   console.log('Server is running at 3200');
   // connectToMongoDB();
   connectUsingMongoose();
