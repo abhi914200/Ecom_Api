@@ -3,7 +3,8 @@
 import express from 'express';
 import swagger from 'swagger-ui-express';
 import dotenv from "dotenv";
-
+dotenv.config();
+const PORT=process.env.PORT||3200;
 import productRouter from './src/features/product/product.routes.js';
 import userRouter from './src/features/user/user.routes.js';
 import jwtAuth from './src/middlewares/jwt.middleware.js';
