@@ -1,27 +1,23 @@
 import jwt from 'jsonwebtoken';
 
 const jwtAuth = (req, res, next) => {
-  // 1. Read the token.
-  const token = req.headers['authorization'];
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) return res.status(401).send('Unauthorized');
 
-  console.log(token);
-  // 2. if no token, return the error.
-  if (!token) {
-    return res.status(401).send('Unauthorized');
-  }
-  // 3. check if token is valid.
+  // Accept "Bearer <token>" or raw token
+  const token = authHeader.startsWith('Bearer ')
+    ? authHeader.slice(7).trim()
+    : authHeader.trim();
+
   try {
-    const payload = jwt.verify(
-      token,
-      'AIb6d35fvJM4O9pXqXQNla2jBCH9kuLz'
-    );
+    const secret = process.env.JWT_SECRET || 'replace-with-env-secret';
+    const payload = jwt.verify(token, secret);
     req.userID = payload.userID;
   } catch (err) {
-    // 4. return error.
     console.log(err);
     return res.status(401).send('Unauthorized');
   }
-  // 5. call next middleware
+
   next();
 };
 

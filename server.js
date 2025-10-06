@@ -3,6 +3,11 @@ import express from 'express';
 import swagger from 'swagger-ui-express';
 import dotenv from "dotenv";
 
+// Load environment variables before reading process.env
+dotenv.config();
+
+const PORT = process.env.PORT || 3200;
+
 import productRouter from './src/features/product/product.routes.js';
 import userRouter from './src/features/user/user.routes.js';
 import jwtAuth from './src/middlewares/jwt.middleware.js';
@@ -21,9 +26,6 @@ import likeRouter from './src/features/like/like.routes.js';
 
 // 2. Create Server
 const server = express();
-
-// load all the environment variables in application
-dotenv.config();
 
 // CORS policy configuration
 server.use((req, res, next) => {
@@ -100,9 +102,8 @@ server.use((req, res) => {
 });
 
 // 5. Specify port.
-server.listen(3200, ()=>{
-  console.log('Server is running at 3200');
-  // connectToMongoDB();
+server.listen(PORT, ()=>{
+  console.log(`Server is running at ${PORT}`);
   connectUsingMongoose();
 });
 
